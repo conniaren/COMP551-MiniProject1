@@ -64,9 +64,22 @@ weekly_hospitalization_data = us_hospitalization_data.groupby(by=["open_covid_re
 weekly_hospitalization_data = weekly_hospitalization_data.drop(weekly_hospitalization_data[(weekly_hospitalization_data.
                                                                                             date == '2020-09-28') |
                                                                                            (weekly_hospitalization_data.
-                                                                                            date == '2020-10-05')].index)
+                                                                                            date == '2020-10-05') |
+                                                                                           (weekly_hospitalization_data.
+                                                                                            date == '2020-02-24')].
+                                                               index).reset_index()
 
-# Note: FIx rhode island has an extra week from starting its data entry march 1st
-print(weekly_hospitalization_data)
-weekly_hospitalization_data.to_csv('clean-hospital-data.csv')
-print(np.append(search_data, np.array(weekly_hospitalization_data[['hospitalized_new', 'hospitalized_cumulative']]), axis=1))
+# Merge the datasets together, provided both a numpy array and Dataframe version of it
+search_dataframe = pd.DataFrame(search_data[1:, :], columns=search_data[0, :])
+
+final_covid_dataframe = pd.concat([search_dataframe,weekly_hospitalization_data[['hospitalized_new',
+                                                                                 'hospitalized_cumulative']]],
+                                 axis=1)
+
+final_covid_dataset = np.append(search_data[1:, :], np.array(weekly_hospitalization_data
+                                                                            [['hospitalized_new',
+                                                                              'hospitalized_cumulative']]), axis=1)
+
+print(final_covid_dataset)
+print(final_covid_dataframe)
+#final_covid_dataframe.to_csv('us_covid_dataset_final.csv')
