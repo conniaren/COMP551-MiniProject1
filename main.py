@@ -101,5 +101,5 @@ for col in final_covid_dataframe.columns:
                 plt.ylabel("Searches (%)")
                 plt.title('Searches of {}'.format(col))
                 plt.legend(loc="center right", bbox_to_anchor=(1.13, 0.5), ncol=1)
-                plt.show()
+                #plt.show()
 
