@@ -101,9 +101,7 @@ final_covid_dataset = np.append(clean_search_data[1:, :], np.array(weekly_hospit
                                                                    [['hospitalized_new',
                                                                      'hospitalized_cumulative']]), axis=1)
 
-print(final_covid_dataset[1:, 6:127])
-print(final_covid_dataframe.iloc[:, 6:126].astype(float))
-print(final_covid_dataset.shape)
+print(final_covid_dataframe)
 
 # final_covid_dataframe.to_csv('us_covid_dataset_final.csv')
 
