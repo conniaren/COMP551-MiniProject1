@@ -23,12 +23,15 @@ search_data = np.delete(search_data_no_head, np.count_nonzero(np.isnan(search_da
 search_data_symptoms = search_data_symptoms[~(np.count_nonzero(np.isnan(search_data_no_head[:, 9:]), axis=0) >
                                               0.5 * np.shape(search_data_no_head)[0])]
 
-# Normalization based on de-medianing the data
-search_data[np.isnan(search_data)] = 0
+# Normalization based on region-based de-medianing of the data
+search_data[np.isnan(search_data)] = 0.0
 
-median = np.median(search_data, axis=0)# MEDIAN ARRAY
-for i in range(search_data.shape[1]):
-    search_data[:, i] = search_data[:, i] - median[i]
+for i in range(0, 16):
+    lower = i*38
+    upper = lower+38
+    median = np.median(search_data[lower:upper, :], axis=0)# MEDIAN ARRAY
+    for j in range(search_data.shape[1]):
+        search_data[lower:upper, j] = search_data[lower:upper, j] - median[j]
 
 search_data_with_head = np.concatenate(([search_data_symptoms], search_data), axis=0)
 search_data_name = np.delete(search_data_name, [5, 6], axis=1)
@@ -88,7 +91,7 @@ weekly_hospitalization_data = weekly_hospitalization_data.drop(weekly_hospitaliz
                                                                                             date == '2020-10-05') |
                                                                                            (weekly_hospitalization_data.
                                                                                             date == '2020-02-24')].
-                                                               index).reset_index()
+                                                               index).reset_index(drop=True)
 
 # Merge the datasets together, provided both a numpy array and Dataframe version of it
 search_dataframe = pd.DataFrame(clean_search_data[1:, :], columns=clean_search_data[0, :])
@@ -101,9 +104,9 @@ final_covid_dataset = np.append(clean_search_data[1:, :], np.array(weekly_hospit
                                                                    [['hospitalized_new',
                                                                      'hospitalized_cumulative']]), axis=1)
 
-print(final_covid_dataframe)
+print(final_covid_dataset)
 
-# final_covid_dataframe.to_csv('us_covid_dataset_final.csv')
+#final_covid_dataframe.to_csv('us_covid_dataset_final.csv')
 
 ##################################### Task 2 #####################################
 
