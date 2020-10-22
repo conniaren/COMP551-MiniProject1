@@ -106,21 +106,5 @@ final_covid_dataset = np.append(clean_search_data[1:, :], np.array(weekly_hospit
 
 print(final_covid_dataset)
 
-#final_covid_dataframe.to_csv('us_covid_dataset_final.csv')
+final_covid_dataframe.to_csv('us_covid_dataset_final.csv')
 
-##################################### Task 2 #####################################
-
-
-# Visualize the evolution of popularity of various symptoms across different regions over time
-for col in final_covid_dataframe.columns:
-    if 'symptom:' in col:
-        df = final_covid_dataframe[["sub_region_1_code", "date", col]]
-        pivot_df = df.pivot(index='date', columns='sub_region_1_code', values=col).replace(np.nan, 0)
-        pivot_df_percent = pivot_df.apply(lambda x: x if x.name == 'date' else x * 100 / sum(x), axis=1)
-
-        pivot_df_percent.plot.bar(stacked=True)
-        plt.ylim(0, 100)
-        plt.ylabel("Searches (%)")
-        plt.title('Searches of {}'.format(col))
-        plt.legend(loc="center right", bbox_to_anchor=(1.13, 0.5), ncol=1)
-        # plt.show()
