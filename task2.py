@@ -28,7 +28,7 @@ features = ['symptom:Allergic conjunctivitis','symptom:Angular cheilitis','sympt
 
 x = final_covid_dataframe.loc[:, features].values
 y = final_covid_dataframe.loc[:, ['sub_region_1_code']].values
-x = StandardScaler().fit_transform(x)
+# x = StandardScaler().fit_transform(x)
 
 pca = PCA(n_components=2)
 principalComponents = pca.fit_transform(x)
